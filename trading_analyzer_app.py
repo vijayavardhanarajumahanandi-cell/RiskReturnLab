@@ -1173,9 +1173,16 @@ with tab3:
             align="center", line_color="#2E3035", height=32,
         ),
     ))
-    TABLE_LAYOUT = {k: v for k, v in PLOTLY_LAYOUT.items() if k not in ("xaxis", "yaxis")}
-    fig_tbl.update_layout(**TABLE_LAYOUT, height=320,
-                           margin=dict(l=0, r=0, t=10, b=0))
+   TABLE_LAYOUT = {
+    k: v for k, v in PLOTLY_LAYOUT.items()
+    if k not in ("xaxis", "yaxis", "margin")
+}
+
+fig_tbl.update_layout(
+    **TABLE_LAYOUT,
+    height=320,
+    margin=dict(l=0, r=0, t=10, b=0)
+)
     st.plotly_chart(fig_tbl, use_container_width=True)
     csv = R["cls_metrics"].to_csv(index=False).encode()
     st.download_button("⬇ Download Classification Metrics (CSV)", csv,
