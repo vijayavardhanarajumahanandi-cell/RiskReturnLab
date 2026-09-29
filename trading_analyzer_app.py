@@ -1194,7 +1194,3 @@ with tab3:
         "text/csv",
         use_container_width=True
     )
-    st.plotly_chart(fig_tbl, use_container_width=True)
-    csv = R["cls_metrics"].to_csv(index=False).encode()
-    st.download_button("⬇ Download Classification Metrics (CSV)", csv,
-                        "classification_metrics.csv", "text/csv", use_container_width=True)
