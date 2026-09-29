@@ -1,5 +1,7 @@
-# 📈 Trading Risk & Return Analyzer
+# 📈 TradeStatML
 
+> Bayesian ML dashboard for market risk & return analysis
+>
 > **Bayesian · Kernel · Statistical Machine Learning Dashboard**  
 > Built with Streamlit · Plotly · Scikit-Learn · NumPy
 
@@ -91,8 +93,8 @@ Every model is implemented **from scratch in NumPy** — no sklearn shortcuts fo
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/<your-username>/trading-risk-return-analyzer.git
-cd trading-risk-return-analyzer
+git clone https://github.com/<your-username>/tradestatml.git
+cd tradestatml
 
 # 2. Create virtual environment (recommended)
 python -m venv venv
@@ -124,7 +126,7 @@ No extra config needed — `requirements.txt` is auto-detected.
 ## 📁 Project Structure
 
 ```
-trading-risk-return-analyzer/
+tradestatml/
 ├── app.py                  # Main Streamlit dashboard
 ├── requirements.txt        # Python dependencies
 └── README.md               # This file
