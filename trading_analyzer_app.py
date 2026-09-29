@@ -14,7 +14,7 @@ warnings.filterwarnings("ignore")
 
 # ── Page Config ────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Trading Risk & Return Analyzer",
+    page_title="TradeStatML",
     page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -591,7 +591,7 @@ if run_btn:
 
 st.markdown(f"""
 <div class='page-header'>
-  <p>📊 Trading Risk & Return Analyzer</p>
+  <p>📊 TradeStatML</p>
   <h1>Bayesian · Kernel · Statistical Machine Learning</h1>
 </div>
 """, unsafe_allow_html=True)
@@ -1146,12 +1146,36 @@ with tab3:
 
     # ── Raw metrics summary ───────────────────────────────────────────────────
     st.markdown("<div class='section-title'>Full Classification Metrics Export</div>", unsafe_allow_html=True)
-    st.dataframe(
-        R["cls_metrics"].style.background_gradient(
-            cmap="Blues", subset=["ROC-AUC","F1","Accuracy"], low=0.3, high=0.85
+    cm_exp = R["cls_metrics"].copy()
+    def _color(val, col):
+        if col not in ["ROC-AUC","F1","Accuracy"]: return "#1F2833"
+        norm = min(max((val - 0.4) / 0.6, 0), 1)
+        r = int(31  + norm * (102 - 31))
+        g = int(40  + norm * (252 - 40))
+        b = int(51  + norm * (241 - 51))
+        return f"rgba({r},{g},{b},0.25)"
+
+    fig_tbl = go.Figure(go.Table(
+        header=dict(
+            values=[f"<b>{c}</b>" for c in cm_exp.columns],
+            fill_color="#1F2833", font=dict(color=CYAN, size=12),
+            align="center", line_color="#2E3035", height=36,
         ),
-        use_container_width=True, hide_index=True,
-    )
+        cells=dict(
+            values=[cm_exp[c].map(lambda x: f"{x:.4f}" if isinstance(x, float) else x)
+                    for c in cm_exp.columns],
+            fill_color=[
+                ["#1F2833"] * len(cm_exp) if c not in ["ROC-AUC","F1","Accuracy"]
+                else [_color(v, c) for v in cm_exp[c]]
+                for c in cm_exp.columns
+            ],
+            font=dict(color="#C5C6C7", size=12),
+            align="center", line_color="#2E3035", height=32,
+        ),
+    ))
+    fig_tbl.update_layout(**PLOTLY_LAYOUT, height=320,
+                           margin=dict(l=0, r=0, t=10, b=0))
+    st.plotly_chart(fig_tbl, use_container_width=True)
     csv = R["cls_metrics"].to_csv(index=False).encode()
     st.download_button("⬇ Download Classification Metrics (CSV)", csv,
                         "classification_metrics.csv", "text/csv", use_container_width=True)
