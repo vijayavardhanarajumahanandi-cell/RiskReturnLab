@@ -1173,7 +1173,7 @@ with tab3:
             align="center", line_color="#2E3035", height=32,
         ),
     ))
-       TABLE_LAYOUT = {
+    TABLE_LAYOUT = {
         k: v for k, v in PLOTLY_LAYOUT.items()
         if k not in ("xaxis", "yaxis", "margin")
     }
